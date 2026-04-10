@@ -1,0 +1,111 @@
+<div class="dashboard-wrapper">
+
+  <!-- Encabezado de la Vista -->
+  <header class="db-header">
+    <div class="title-section">
+      <div class="breadcrumb">Análisis / Global</div>
+      <h1>Panel de Inteligencia</h1>
+      <p>Supervisión en tiempo real de la seguridad ciudadana y protección de género</p>
+    </div>
+
+    <div class="header-actions">
+      <div class="live-indicator">
+        <span class="dot"></span>
+        <span class="text">SISTEMA ACTIVO</span>
+      </div>
+      <button class="btn-refresh" title="Sincronizar Datos">🔄</button>
+    </div>
+  </header>
+
+  <!-- Grilla de KPIs (Tarjetas de métricas principales) -->
+  <div class="kpi-container">
+    <div class="kpi-box main-glow-indigo">
+      <div class="kpi-icon">📊</div>
+      <div class="kpi-content">
+        <span class="kpi-label">Casos Totales</span>
+        <span class="kpi-number">1,284</span>
+        <span class="kpi-trend positive">↑ 12% vs mes anterior</span>
+      </div>
+    </div>
+
+    <div class="kpi-box main-glow-red">
+      <div class="kpi-icon">🚨</div>
+      <div class="kpi-content">
+        <span class="kpi-label">Alertas Críticas</span>
+        <span class="kpi-number">12</span>
+        <span class="kpi-trend negative">↑ 2 nuevas hoy</span>
+      </div>
+    </div>
+
+    <div class="kpi-box main-glow-amber">
+      <div class="kpi-icon">🤝</div>
+      <div class="kpi-content">
+        <span class="kpi-label">Casos de Trata</span>
+        <span class="kpi-number">42</span>
+        <span class="kpi-trend">Sin variaciones</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Grilla Principal de Contenido -->
+  <div class="db-main-grid">
+
+    <!-- Panel de Gráfico (Analítica) -->
+    <div class="db-panel chart-panel">
+      <div class="panel-head">
+        <div class="head-info">
+          <h3>Flujo de Reportes</h3>
+          <p>Frecuencia de incidencias registradas en la última semana</p>
+        </div>
+        <select class="select-mini">
+          <option>Últimos 7 días</option>
+          <option>Últimos 30 días</option>
+        </select>
+      </div>
+
+      <div class="chart-container">
+        <div class="chart-visual">
+          @for (h of chartData(); track $index) {
+          <div class="bar-wrap">
+            <div class="bar-tooltip">{{ h }}%</div>
+            <div class="bar" [style.height.%]="h"></div>
+            <span class="bar-label">D{{ $index + 1 }}</span>
+          </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Panel de Alertas (Últimos Movimientos) -->
+    <div class="db-panel alerts-panel">
+      <div class="panel-head">
+        <div class="head-info">
+          <h3>Monitor de Alertas</h3>
+        </div>
+        <button class="btn-link">Ver todas</button>
+      </div>
+
+      <div class="alert-list">
+        @for (alert of recentAlerts(); track alert.id) {
+        <div class="alert-card-modern">
+          <div class="alert-status-pillar" [ngClass]="alert.status"></div>
+          <div class="alert-info">
+            <div class="alert-meta">
+              <span class="id">{{ alert.id }}</span>
+              <span class="badge-mini" [ngClass]="alert.status">{{ alert.label }}</span>
+            </div>
+            <strong class="type">{{ alert.type }}</strong>
+            <div class="location-time">
+              <span>📍 {{ alert.zone }}</span>
+              <span>•</span>
+              <span>🕒 {{ alert.time }}</span>
+            </div>
+          </div>
+          <button class="btn-action-go">→</button>
+        </div>
+        }
+      </div>
+    </div>
+
+  </div>
+</div>

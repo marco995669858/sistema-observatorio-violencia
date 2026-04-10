@@ -1,0 +1,21 @@
+<!-- El contenedor raíz controla el tema global basado en la señal isDarkMode -->
+<div [class.dark-mode]="isDarkMode()" class="app-shell">
+  <app-loading-spinner></app-loading-spinner>
+  <!-- La clase no-sidebar se aplica cuando estamos en login o registro para centrar el contenido -->
+  <div class="layout-container" [class.no-sidebar]="!showNavbar()">
+
+    <!-- El Navbar solo se renderiza si no estamos en rutas de autenticación -->
+    @if (showNavbar()) {
+      <app-navbar
+        [isDarkMode]="isDarkMode()"
+        (onToggleTheme)="toggleTheme()">
+      </app-navbar>
+    }
+
+    <!-- El contenido de las rutas (Dashboard, Alertas, etc.) se carga aquí -->
+    <main class="content-viewport">
+      <router-outlet></router-outlet>
+    </main>
+  </div>
+
+</div>

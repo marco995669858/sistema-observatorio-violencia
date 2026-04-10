@@ -1,0 +1,58 @@
+<div class="alertas-wrapper">
+
+  <!-- Encabezado -->
+  <header class="al-header">
+    <div class="title-section">
+      <h1>Centro de Alertas</h1>
+      <p>Gestión, seguimiento y resolución de incidentes reportados</p>
+    </div>
+    <button class="btn-primary">
+      <span class="icon">+</span> Registrar Alerta
+    </button>
+  </header>
+
+  <!-- Filtros -->
+  <div class="filters-container">
+    @for (filtro of filtros; track filtro) {
+      <button
+        class="filter-chip"
+        [class.active]="activeFilter() === filtro"
+        (click)="setFilter(filtro)">
+        {{ filtro }}
+      </button>
+    }
+  </div>
+
+  <!-- Grid de Alertas -->
+  <div class="alerts-grid">
+    @for (alerta of filteredAlertas(); track alerta.id) {
+      <div class="alert-card">
+
+        <div class="card-top">
+          <span class="alert-id">{{ alerta.id }}</span>
+          <span class="badge" [ngClass]="alerta.statusClass">{{ alerta.status }}</span>
+        </div>
+
+        <div class="card-body">
+          <h3 class="alert-type">{{ alerta.type }}</h3>
+          <div class="alert-meta">
+            <span class="meta-item">📍 {{ alerta.location }}</span>
+            <span class="meta-item">🕒 {{ alerta.time }}</span>
+          </div>
+        </div>
+
+        <div class="card-footer">
+          <button class="btn-outline">Ver Detalles</button>
+          <button class="btn-icon" title="Asignar a especialista">👤</button>
+        </div>
+
+      </div>
+    } @empty {
+      <div class="empty-state">
+        <span class="empty-icon">📂</span>
+        <p>No hay alertas que coincidan con este filtro.</p>
+      </div>
+    }
+  </div>
+
+</div>

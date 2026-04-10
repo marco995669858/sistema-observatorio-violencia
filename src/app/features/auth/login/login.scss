@@ -1,0 +1,23 @@
+.content-viewport{
+  padding: 0 !important;
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+:host {
+  display: block;
+}

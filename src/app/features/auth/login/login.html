@@ -1,0 +1,95 @@
+<div
+  class="auth-viewport min-h-screen w-full bg-slate-950 flex items-center justify-center relative overflow-hidden font-sans">
+  <!-- Elementos decorativos de fondo -->
+  <div class="absolute inset-0 z-0 pointer-events-none">
+    <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-600/20 rounded-full blur-[100px]"></div>
+    <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-pink-600/10 rounded-full blur-[100px]"></div>
+  </div>
+
+  <div class="login-container w-full max-w-[440px] p-6 z-10">
+    <div
+      class="login-card bg-white rounded-[1.25rem] shadow-[0_25px_50px_-12px_rgba(0,0,0,0.5)] overflow-hidden relative animate-slide-up">
+      <!-- Barra superior estética -->
+      <div class="h-1.5 bg-gradient-to-r from-indigo-600 to-pink-500"></div>
+
+      <div class="card-body p-10">
+        <header class="header text-center mb-10">
+          <div
+            class="icon-wrapper w-16 h-16 bg-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-inner text-3xl">
+            🛡️
+          </div>
+          <h1 class="text-[1.75rem] font-black text-slate-900 tracking-tight">Observatorio</h1>
+          <p class="text-slate-500 text-sm mt-1">Sistema Centralizado de Monitoreo</p>
+          <div
+            class="inline-block bg-red-100 text-red-700 text-[0.65rem] font-extrabold px-3 py-1 rounded-full uppercase mt-4 tracking-wider">
+            Acceso Restringido
+          </div>
+        </header>
+
+        <form [formGroup]="loginForm" (ngSubmit)="handleLogin()" class="flex flex-col gap-6">
+          <div class="field flex flex-col gap-2">
+            <label class="text-[0.8rem] font-bold text-slate-900 uppercase">Correo</label>
+            <div
+              class="input-box flex items-center bg-slate-50 border-2 rounded-xl transition-all duration-200 relative focus-within:border-indigo-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-indigo-600/10"
+              [class.border-red-500]="isInvalid('email')" [class.border-slate-200]="!isInvalid('email')">
+              <span class="absolute left-4 opacity-50">✉️</span>
+              <input type="email" formControlName="email" placeholder="usuario@observatorio.gov" autocomplete="email"
+                class="w-full py-3.5 pl-12 pr-4 bg-transparent border-none outline-none text-slate-900 placeholder:text-slate-400">
+            </div>
+            @if (isInvalid('email')) {
+            <small class="text-[0.75rem] text-red-500 font-medium">Ingrese un correo válido</small>
+            }
+          </div>
+
+          <div class="field flex flex-col gap-2">
+            <label class="text-[0.8rem] font-bold text-slate-900 uppercase">Contraseña</label>
+            <div
+              class="input-box flex items-center bg-slate-50 border-2 rounded-xl transition-all duration-200 relative focus-within:border-indigo-600 focus-within:bg-white focus-within:ring-4 focus-within:ring-indigo-600/10"
+              [class.border-red-500]="isInvalid('password')" [class.border-slate-200]="!isInvalid('password')">
+              <span class="absolute left-4 opacity-50">🔒</span>
+              <input type="password" formControlName="password" placeholder="••••••••" autocomplete="current-password"
+                class="w-full py-3.5 pl-12 pr-4 bg-transparent border-none outline-none text-slate-900 placeholder:text-slate-400">
+            </div>
+            @if (isInvalid('password')) {
+            <small class="text-[0.75rem] text-red-500 font-medium">Mínimo 6 caracteres</small>
+            }
+          </div>
+
+          <button type="submit"
+            class="w-full py-4.5 bg-indigo-600 hover:bg-indigo-700 disabled:opacity-60 disabled:cursor-not-allowed text-white font-extrabold text-base rounded-xl transition-all duration-300 transform hover:-translate-y-0.5 shadow-[0_10px_20px_-5px_rgba(79,70,229,0.4)] hover:shadow-[0_15px_25px_-5px_rgba(79,70,229,0.5)] flex items-center justify-center min-h-[56px]"
+            [disabled]="loginForm.invalid || isLoading()">
+            @if (!isLoading()) {
+            <span>INGRESAR AL SISTEMA</span>
+            } @else {
+            <div class="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div>
+            }
+          </button>
+
+          <!-- <div class="form-options flex justify-end items-center text-sm">
+            <a href="/registrar" class="text-indigo-600 font-bold hover:underline">Crear una cuenta</a>
+          </div> -->
+        </form>
+
+        <footer class="mt-5 text-center">
+          <p class="text-[0.7rem] text-slate-400 leading-relaxed">
+            Este sistema está monitoreado. Cualquier acceso no autorizado será reportado a la unidad de ciberseguridad.
+          </p>
+          <div class="mt-4 flex justify-center gap-3 text-[0.75rem] text-slate-300 font-semibold">
+            <a href="#" class="hover:text-slate-500">Ayuda</a>
+            <span>•</span>
+            <a href="#" class="hover:text-slate-500">Privacidad</a>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+
+  <!-- Alerta flotante -->
+  @if (toast()) {
+  <div
+    class="fixed bottom-8 left-1/2 -translate-x-1/2 bg-slate-900 text-white px-8 py-4 rounded-2xl shadow-2xl flex items-center gap-3 animate-slide-up z-[100]">
+    <span class="text-xl">⚠️</span>
+    <span class="font-medium">{{ toast() }}</span>
+  </div>
+  }
+</div>

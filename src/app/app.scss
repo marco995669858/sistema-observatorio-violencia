@@ -1,0 +1,51 @@
+// VARIABLES DE TEMA GLOBAL
+.app-shell {
+  --bg-body: #f8fafc;
+  --bg-card: #ffffff;
+  --text-main: #0f172a;
+  --text-muted: #64748b;
+  --border-color: #e2e8f0;
+  --accent: #4f46e5;
+  --nav-hover: #f1f5f9;
+  --transition: 0.3s ease;
+
+  // MODO NOCHE
+  &.dark-mode {
+    --bg-body: #020617;
+    --bg-card: #0f172a;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --border-color: #1e293b;
+    --accent: #818cf8;
+    --nav-hover: #1e293b;
+  }
+
+  min-height: 100vh;
+  background-color: var(--bg-body);
+  color: var(--text-main);
+  transition: background-color var(--transition),
+  color var(--transition);
+}
+
+// DISEÑO DE DISPOSICIÓN (LAYOUT)
+.layout-container {
+  display: flex;
+  min-height: 100vh;
+
+  // En móviles, el navbar se va abajo y el contenido arriba
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+}
+
+.content-viewport {
+  flex: 1;
+  padding: 3rem;
+  overflow-y: auto;
+  max-height: 100vh;
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+    padding-bottom: 90px; // Espacio para el Navbar inferior en móvil
+  }
+}

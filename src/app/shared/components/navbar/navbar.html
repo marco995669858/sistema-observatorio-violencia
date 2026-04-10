@@ -1,0 +1,76 @@
+<aside class="sidebar">
+  <div class="sidebar-content">
+
+    <div class="sidebar-header">
+      <div class="header-top">
+        <div class="branding">
+          <div class="logo-wrapper">
+            <span class="logo-icon">🛡️</span>
+          </div>
+          <div class="brand-text">
+            <span class="title">OBSERVATORIO</span>
+          </div>
+        </div>
+
+        <div class="theme-switch-container">
+          <label class="switch">
+            <input type="checkbox" [checked]="isDarkMode()" (change)="onToggleTheme.emit()">
+            <span class="slider">
+              <span class="sun">☀️</span>
+              <span class="moon">🌙</span>
+            </span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <nav class="nav-section">
+      <small class="section-label">Menú Principal</small>
+      <div class="nav-group">
+        <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+          <span class="icon">📊</span>
+          <span class="label">Panel General</span>
+        </a>
+        <a routerLink="/alertas" routerLinkActive="active" class="nav-link">
+          <span class="icon">🚨</span>
+          <span class="label">Alertas Activas</span>
+        </a>
+        <a routerLink="/reportar" routerLinkActive="active" class="nav-link">
+          <span class="icon">✍️</span>
+          <span class="label">Reportar Alerta</span>
+        </a>
+      </div>
+    </nav>
+
+    <nav class="nav-section">
+      <small class="section-label">Sistema</small>
+      <div class="nav-group">
+        <a routerLink="/mapa" routerLinkActive="active" class="nav-link">
+          <span class="icon">📍</span>
+          <span class="label">Mapa de Riesgo</span>
+        </a>
+
+        <!-- <a routerLink="/config" routerLinkActive="active" class="nav-link desktop-only">
+          <span class="icon">⚙️</span>
+          <span class="label">Configuración</span>
+        </a> -->
+      </div>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-main">
+          <div class="avatar">JD</div>
+          <div class="user-info">
+            <span class="name">Juan Delgado</span>
+            <span class="role">Investigador</span>
+          </div>
+        </div>
+        <button (click)="logout()" class="logout-btn" title="Cerrar Sesión">
+          <span class="icon">🚪</span>
+        </button>
+      </div>
+    </div>
+
+  </div>
+</aside>

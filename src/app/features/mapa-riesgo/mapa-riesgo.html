@@ -1,0 +1,28 @@
+<div class="map-view-container animate-fade">
+  <header class="map-header">
+    <div class="header-info">
+      <h1>Mapa de Riesgo Territorial</h1>
+      <p>Visualización geoespacial de incidentes y zonas de vigilancia crítica.</p>
+    </div>
+    <div class="map-legend">
+      <div class="legend-item"><span class="dot crit"></span> Crítico</div>
+      <div class="legend-item"><span class="dot med"></span> Medio</div>
+      <div class="legend-item"><span class="dot low"></span> Bajo</div>
+    </div>
+  </header>
+
+  <!-- Contenedor del Mapa -->
+  <div class="map-canvas-wrapper">
+    <div #mapContainer id="map" class="leaflet-map"></div>
+
+    <!-- Overlay de Controles Minimalistas -->
+    <div class="map-overlay-tools">
+      <button (click)="recenterMap()" class="tool-btn" title="Recentrar">📍</button>
+      <div class="divider"></div>
+      <div class="stats-mini">
+        <span class="val">12</span>
+        <span class="lab">Alertas activas en zona</span>
+      </div>
+    </div>
+  </div>
+</div>
