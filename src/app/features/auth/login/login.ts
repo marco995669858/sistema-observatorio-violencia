@@ -26,7 +26,8 @@ export class Login {
     'parrieta@mujeres.gob.mx',
     'frodriguez@data4sdgs.org',
     'marcoamm.0117@gmail.com',
-    'anhfernandezc@gmail.com'
+    'anhfernandezc@gmail.com',
+    'hendyhuayana@gmail.com'
   ];
 
   isLoading = signal(false);
@@ -45,8 +46,8 @@ export class Login {
       if (this.correosPermitidos.includes(email!) && password === '12345678') {
         const uuid = crypto.randomUUID ? crypto.randomUUID() : 'token-' + Date.now();
         localStorage.setItem('obs_auth_token', uuid);
-        // Redirigimos al dashboard tras un éxito
-        this.router.navigate(['/dashboard']);
+        // Redirigimos al alertas tras un éxito
+        this.router.navigate(['/alertas']);
       } else {
         // Mostramos error si las credenciales no coinciden
         this.showToast('Correo o contraseña incorrectos.');
