@@ -111,8 +111,6 @@
   gap: 1.5rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  position: relative;
-  overflow: hidden;
 
   &:hover {
     transform: translateY(-8px);
@@ -223,15 +221,12 @@
 }
 
 /* ESTILOS DE GRÁFICO REFINADOS */
-.chart-container {
-  padding: 1rem 0;
-}
-
 .chart-visual {
   height: 220px;
   display: flex;
   align-items: flex-end;
   gap: 20px;
+  padding: 1rem 0;
 
   .bar-wrap {
     flex: 1;
@@ -311,22 +306,27 @@
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
   }
 
+  /* Sincronizado con las clases de Alertas SCSS */
   .alert-status-pillar {
     width: 6px;
     height: 40px;
     border-radius: 10px;
 
-    &.high {
+    &.critical {
       background: #ef4444;
       box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
     }
 
-    &.med {
+    &.high {
       background: #f59e0b;
     }
 
-    &.low {
+    &.medium {
       background: #4f46e5;
+    }
+
+    &.resolved {
+      background: #10b981;
     }
   }
 
@@ -355,19 +355,24 @@
         border-radius: 6px;
         text-transform: uppercase;
 
-        &.high {
+        &.critical {
           background: #fee2e2;
           color: #dc2626;
         }
 
-        &.med {
+        &.high {
           background: #fffbeb;
           color: #d97706;
         }
 
-        &.low {
+        &.medium {
           background: #eef2ff;
           color: #4f46e5;
+        }
+
+        &.resolved {
+          background: #ecfdf5;
+          color: #10b981;
         }
       }
     }
@@ -405,7 +410,17 @@
   }
 }
 
-/* CONTROLES EXTRA */
+.empty-state-mini {
+  padding: 2rem;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: var(--nav-hover);
+  border-radius: 16px;
+  border: 1px dashed var(--border-color);
+}
+
 .select-mini {
   padding: 6px 12px;
   border-radius: 10px;
@@ -431,7 +446,6 @@
   }
 }
 
-/* ANIMACIONES */
 @keyframes slideUpFade {
   from {
     opacity: 0;

@@ -6,7 +6,8 @@
       <h1>Centro de Alertas</h1>
       <p>Gestión, seguimiento y resolución de incidentes reportados</p>
     </div>
-    <button class="btn-primary">
+    <!-- Cambiado para abrir el Modal -->
+    <button class="btn-primary" (click)="openCreateModal()">
       <span class="icon">+</span> Registrar Alerta
     </button>
   </header>
@@ -14,45 +15,177 @@
   <!-- Filtros -->
   <div class="filters-container">
     @for (filtro of filtros; track filtro) {
-      <button
-        class="filter-chip"
-        [class.active]="activeFilter() === filtro"
-        (click)="setFilter(filtro)">
-        {{ filtro }}
-      </button>
+    <button class="filter-chip" [class.active]="activeFilter() === filtro" (click)="setFilter(filtro)">
+      {{ filtro }}
+    </button>
     }
   </div>
 
   <!-- Grid de Alertas -->
   <div class="alerts-grid">
     @for (alerta of filteredAlertas(); track alerta.id) {
-      <div class="alert-card">
+    <div class="alert-card animate-fade">
 
-        <div class="card-top">
-          <span class="alert-id">{{ alerta.id }}</span>
-          <span class="badge" [ngClass]="alerta.statusClass">{{ alerta.status }}</span>
+      <div class="card-top">
+        <span class="alert-id">{{ alerta.id }}</span>
+        <span class="badge" [ngClass]="alerta.statusClass">{{ alerta.status }}</span>
+      </div>
+
+      <div class="card-body">
+        <h3 class="alert-type">{{ alerta.type }}</h3>
+        <div class="alert-meta">
+          <span class="meta-item">📍 {{ alerta.location }}</span>
+          <span class="meta-item">🕒 {{ alerta.time }}</span>
         </div>
+      </div>
 
-        <div class="card-body">
-          <h3 class="alert-type">{{ alerta.type }}</h3>
-          <div class="alert-meta">
-            <span class="meta-item">📍 {{ alerta.location }}</span>
-            <span class="meta-item">🕒 {{ alerta.time }}</span>
+      <div class="card-footer">
+        <!-- Botones de Acción Modificados -->
+        <button class="btn-outline" (click)="openDetailsModal(alerta)">Ver Detalles</button>
+        <div class="actions-right">
+          <button class="btn-icon delete-btn" title="Eliminar Alerta" (click)="deleteAlert(alerta.id)">🗑️</button>
+          <button class="btn-icon" title="Asignar a especialista">👤</button>
+        </div>
+      </div>
+
+    </div>
+    } @empty {
+    <div class="empty-state">
+      <span class="empty-icon">📂</span>
+      <p>No hay alertas registradas en esta categoría.</p>
+    </div>
+    }
+  </div>
+
+  <!-- ========================================== -->
+  <!-- MODAL: CREAR ALERTA                        -->
+  <!-- ========================================== -->
+  @if (showCreateModal()) {
+  <div class="modal-overlay animate-fade">
+    <div class="modal-container create-modal">
+
+      <header class="modal-header-centered">
+        <div class="icon-circle">🚨</div>
+        <h2>Reporte de Alerta Segura</h2>
+        <p>Ubica el incidente para una respuesta efectiva del Observatorio.</p>
+      </header>
+
+      <form [formGroup]="alertForm" (ngSubmit)="saveAlert()" class="alert-form">
+
+        <div class="form-group">
+          <label>Tipo de Incidente</label>
+          <div class="select-wrapper">
+            <select formControlName="tipo" class="form-control">
+              @for (tipo of tipos; track tipo) {
+              <option [value]="tipo">{{ tipo }}</option>
+              }
+            </select>
           </div>
         </div>
 
-        <div class="card-footer">
-          <button class="btn-outline">Ver Detalles</button>
-          <button class="btn-icon" title="Asignar a especialista">👤</button>
+        <!-- Combos de Ubicación (Simulados visualmente según la imagen) -->
+        <div class="location-grid">
+          <div class="form-group">
+            <label>Departamento</label>
+            <div class="select-wrapper">
+              <select formControlName="departamento" class="form-control">
+                <option value="">Seleccione...</option>
+                <option value="Lima">Lima</option>
+                <option value="Arequipa">Arequipa</option>
+                <option value="Cusco">Cusco</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Provincia</label>
+            <div class="select-wrapper">
+              <select formControlName="provincia" class="form-control">
+                <option value="">Seleccione...</option>
+                <option value="Lima">Lima</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group full-width">
+            <label>Distrito</label>
+            <div class="select-wrapper">
+              <select formControlName="distrito" class="form-control">
+                <option value="">Seleccione...</option>
+                <option value="Miraflores">Miraflores</option>
+                <option value="San Isidro">San Isidro</option>
+              </select>
+            </div>
+          </div>
         </div>
 
-      </div>
-    } @empty {
-      <div class="empty-state">
-        <span class="empty-icon">📂</span>
-        <p>No hay alertas que coincidan con este filtro.</p>
-      </div>
-    }
+        <div class="form-group">
+          <label>Nivel de Riesgo Estimado</label>
+          <div class="segmented-control">
+            @for (nivel of niveles; track nivel) {
+            <button type="button" class="segment-btn" [class.active]="alertForm.get('riesgo')?.value === nivel"
+              (click)="setRiesgo(nivel)">
+              {{ nivel }}
+            </button>
+            }
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Descripción de los hechos</label>
+          <textarea formControlName="descripcion" class="form-control" rows="3"
+            placeholder="¿Qué sucedió? Escribe detalles relevantes..."></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button type="button" class="btn-cancelar" (click)="closeCreateModal()">Cancelar</button>
+          <button type="submit" [disabled]="alertForm.invalid" class="btn-enviar">ENVIAR ALERTA</button>
+        </div>
+
+      </form>
+    </div>
   </div>
+  }
+
+  <!-- ========================================== -->
+  <!-- MODAL: VER DETALLES DE ALERTA              -->
+  <!-- ========================================== -->
+  @if (selectedAlert()) {
+  <div class="modal-overlay animate-fade">
+    <div class="modal-container details-modal">
+
+      <header class="modal-header">
+        <div>
+          <span class="alert-id-large">{{ selectedAlert()?.id }}</span>
+          <span class="badge" [ngClass]="selectedAlert()?.statusClass">{{ selectedAlert()?.status }}</span>
+        </div>
+        <button class="close-btn" (click)="closeDetailsModal()">✖</button>
+      </header>
+
+      <div class="modal-body">
+        <h2>{{ selectedAlert()?.type }}</h2>
+
+        <div class="detail-row">
+          <strong>📍 Ubicación:</strong>
+          <span>{{ selectedAlert()?.location }} {{ selectedAlert()?.departamento ? '- ' + selectedAlert()?.departamento
+            : '' }}</span>
+        </div>
+        <div class="detail-row">
+          <strong>🕒 Reportado:</strong>
+          <span>{{ selectedAlert()?.time }}</span>
+        </div>
+
+        <div class="detail-box">
+          <strong>Descripción de los hechos:</strong>
+          <p>{{ selectedAlert()?.descripcion || 'No hay descripción detallada disponible para este reporte.' }}</p>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn-outline delete-txt" (click)="deleteAlert(selectedAlert()!.id)">Eliminar Registro</button>
+        <button class="btn-primary" (click)="closeDetailsModal()">Cerrar</button>
+      </div>
+
+    </div>
+  </div>
+  }
 
 </div>

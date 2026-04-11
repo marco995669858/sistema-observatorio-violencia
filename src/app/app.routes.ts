@@ -5,14 +5,16 @@ import { ReporteAlerta } from './features/alerts/reporte-alerta/reporte-alerta';
 import { Login } from './features/auth/login/login';
 import { Register } from './features/auth/register/register';
 import { MapaRiesgo } from './features/mapa-riesgo/mapa-riesgo';
+import { MapaAnalisisRiesgo } from './features/mapa-analisis-riesgo/mapa-analisis-riesgo';
+import { authGuard } from './core/guards/auth-guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: Login },
-  { path: 'registrar', component: Register },
-  { path: 'dashboard', component: Dashboard },
-  { path: 'alertas', component: Alertas },
-  { path: 'reportar', component: ReporteAlerta},
-  { path: 'mapa', component: MapaRiesgo}
+  { path: 'dashboard', component: Dashboard, canActivate: [authGuard] },
+  { path: 'alertas', component: Alertas, canActivate: [authGuard] },
+  { path: 'reportar', component: ReporteAlerta, canActivate: [authGuard]},
+  { path: 'mapa', component: MapaRiesgo, canActivate: [authGuard]},
+  { path: 'mapa-analisis', component: MapaAnalisisRiesgo, canActivate: [authGuard]}
 
 ];

@@ -9,11 +9,23 @@ import { Router } from '@angular/router';
   styleUrl: './login.scss',
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
-  encapsulation: ViewEncapsulation.None
+  encapsulation: ViewEncapsulation.None,
 })
 export class Login {
   private fb = inject(FormBuilder);
   private router = inject(Router);
+
+  private correosPermitidos = [
+    'gustavo.salazar@unwomen.org',
+    'grace.armijos@unwomen.org',
+    'emely.max@unwomen.org',
+    'andrea.llerena@unwomen.org',
+    'teresa.guerra@unwomen.org',
+    'pcarranza@mujeres.gob.mx',
+    'carredondo@mujeres.gob.mx',
+    'parrieta@mujeres.gob.mx',
+    'frodriguez@data4sdgs.org',
+  ];
 
   isLoading = signal(false);
   toast = signal<string | null>(null);
@@ -23,30 +35,22 @@ export class Login {
     password: ['', [Validators.required, Validators.minLength(6)]],
   });
 
-  ngOnInit() {
-    /* onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log('Sesión activa:', user.uid);
+  onLogin() {
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+
+      // 3. Lógica de validación simulada
+      if (this.correosPermitidos.includes(email!) && password === '12345678') {
+        const uuid = crypto.randomUUID ? crypto.randomUUID() : 'token-' + Date.now();
+        localStorage.setItem('obs_auth_token', uuid);
+        // Redirigimos al dashboard tras un éxito
+        this.router.navigate(['/dashboard']);
+      } else {
+        // Mostramos error si las credenciales no coinciden
+        this.showToast('Correo o contraseña incorrectos.');
       }
-    }); */
-  }
-
-  async handleLogin() {
-    if (this.loginForm.invalid) {
+    } else {
       this.loginForm.markAllAsTouched();
-      return;
-    }
-
-    this.isLoading.set(true);
-
-    try {
-      /* await signInAnonymously(auth); */
-      this.showToast('Acceso validado. Iniciando entorno...');
-      this.router.navigate(["/dashboard"])
-    } catch (error) {
-      this.showToast('Error de conexión. Intente de nuevo.');
-    } finally {
-      this.isLoading.set(false);
     }
   }
 

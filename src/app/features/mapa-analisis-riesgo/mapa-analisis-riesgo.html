@@ -1,0 +1,19 @@
+<div class="map-view-container animate-fade">
+  <header class="map-header">
+    <div class="header-info">
+      <h1>Monitoreo Geográfico ArcGIS</h1>
+      <p>Visualización de datos avanzados y análisis territorial externo.</p>
+    </div>
+  </header>
+
+  <!-- Contenedor del Iframe con la lógica de responsividad -->
+  <div class="map-canvas-wrapper">
+    <iframe
+      [src]="safeUrl"
+      class="arcgis-frame"
+      allowfullscreen
+      allow="geolocation"
+      title="ArcGIS Experience">
+    </iframe>
+  </div>
+</div>

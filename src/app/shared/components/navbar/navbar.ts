@@ -18,6 +18,7 @@ export class Navbar {
   onToggleTheme = output<void>();
 
   logout(){
+    localStorage.clear();
     this.router.navigate(["/login"])
   }
 }

@@ -6,8 +6,9 @@
     </div>
     <div class="map-legend">
       <div class="legend-item"><span class="dot crit"></span> Crítico</div>
-      <div class="legend-item"><span class="dot med"></span> Medio</div>
-      <div class="legend-item"><span class="dot low"></span> Bajo</div>
+      <div class="legend-item"><span class="dot high"></span> Alto</div>
+      <div class="legend-item"><span class="dot med"></span> Medio/Bajo</div>
+      <div class="legend-item"><span class="dot resolved"></span> Resuelta</div>
     </div>
   </header>
 
@@ -20,8 +21,8 @@
       <button (click)="recenterMap()" class="tool-btn" title="Recentrar">📍</button>
       <div class="divider"></div>
       <div class="stats-mini">
-        <span class="val">12</span>
-        <span class="lab">Alertas activas en zona</span>
+        <span class="val">{{ alertCount() }}</span>
+        <span class="lab">Alertas registradas</span>
       </div>
     </div>
   </div>

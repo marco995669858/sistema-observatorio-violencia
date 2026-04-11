@@ -1,5 +1,4 @@
 <div class="dashboard-wrapper">
-
   <!-- Encabezado de la Vista -->
   <header class="db-header">
     <div class="title-section">
@@ -13,7 +12,7 @@
         <span class="dot"></span>
         <span class="text">SISTEMA ACTIVO</span>
       </div>
-      <button class="btn-refresh" title="Sincronizar Datos">🔄</button>
+      <button class="btn-refresh" title="Sincronizar Datos" (click)="loadDashboardData()">🔄</button>
     </div>
   </header>
 
@@ -23,7 +22,7 @@
       <div class="kpi-icon">📊</div>
       <div class="kpi-content">
         <span class="kpi-label">Casos Totales</span>
-        <span class="kpi-number">1,284</span>
+        <span class="kpi-number">{{ kpiTotales() }}</span>
         <span class="kpi-trend positive">↑ 12% vs mes anterior</span>
       </div>
     </div>
@@ -32,8 +31,10 @@
       <div class="kpi-icon">🚨</div>
       <div class="kpi-content">
         <span class="kpi-label">Alertas Críticas</span>
-        <span class="kpi-number">12</span>
-        <span class="kpi-trend negative">↑ 2 nuevas hoy</span>
+        <span class="kpi-number">{{ kpiCriticas() }}</span>
+        <span class="kpi-trend" [ngClass]="kpiCriticas() > 0 ? 'negative' : 'positive'">
+          {{ kpiCriticas() > 0 ? 'Atención prioritaria' : 'Bajo control' }}
+        </span>
       </div>
     </div>
 
@@ -41,8 +42,8 @@
       <div class="kpi-icon">🤝</div>
       <div class="kpi-content">
         <span class="kpi-label">Casos de Trata</span>
-        <span class="kpi-number">42</span>
-        <span class="kpi-trend">Sin variaciones</span>
+        <span class="kpi-number">{{ kpiTrata() }}</span>
+        <span class="kpi-trend">Monitoreo constante</span>
       </div>
     </div>
   </div>
@@ -80,28 +81,32 @@
     <div class="db-panel alerts-panel">
       <div class="panel-head">
         <div class="head-info">
-          <h3>Monitor de Alertas</h3>
+          <h3>Monitor de Alertas Recientes</h3>
         </div>
-        <button class="btn-link">Ver todas</button>
+        <button class="btn-link" routerLink="/alertas">Ver todas</button>
       </div>
 
       <div class="alert-list">
         @for (alert of recentAlerts(); track alert.id) {
         <div class="alert-card-modern">
-          <div class="alert-status-pillar" [ngClass]="alert.status"></div>
+          <div class="alert-status-pillar" [ngClass]="alert.statusClass"></div>
           <div class="alert-info">
             <div class="alert-meta">
               <span class="id">{{ alert.id }}</span>
-              <span class="badge-mini" [ngClass]="alert.status">{{ alert.label }}</span>
+              <span class="badge-mini" [ngClass]="alert.statusClass">{{ alert.status }}</span>
             </div>
             <strong class="type">{{ alert.type }}</strong>
             <div class="location-time">
-              <span>📍 {{ alert.zone }}</span>
+              <span>📍 {{ alert.location }}</span>
               <span>•</span>
               <span>🕒 {{ alert.time }}</span>
             </div>
           </div>
-          <button class="btn-action-go">→</button>
+          <button class="btn-action-go" routerLink="/alertas">→</button>
+        </div>
+        } @empty {
+        <div class="empty-state-mini">
+          <p>No hay alertas registradas recientemente.</p>
         </div>
         }
       </div>
