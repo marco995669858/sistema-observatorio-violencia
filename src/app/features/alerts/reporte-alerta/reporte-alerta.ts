@@ -11,84 +11,116 @@ import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
 })
 export class ReporteAlerta {
   private fb = inject(FormBuilder);
+  // Opcional: HttpClient para la conexión real.
+  // private http = inject(HttpClient);
 
-  // Datos de Ubicación (Simulación de base de datos)
-  ubicaciones = {
+  // Estados de la UI
+  isSubmitting = signal(false);
+  successMessage = signal(false);
+
+  // --- DATOS SIMULADOS DE UBIGEO ---
+  ubicaciones: Record<string, Record<string, string[]>> = {
     Lima: {
-      Lima: ['Miraflores', 'San Isidro', 'Cercado de Lima', 'Santiago de Surco'],
+      Lima: ['Cercado de Lima', 'Ate', 'Miraflores', 'San Isidro', 'San Juan de Lurigancho'],
       Cañete: ['San Vicente', 'Asia', 'Mala'],
       Huaral: ['Huaral', 'Chancay'],
     },
     Arequipa: {
       Arequipa: ['Yanahuara', 'Cercado', 'Cayma', 'Jose Luis Bustamante'],
       Islay: ['Mollendo', 'Mejía'],
-      Camaná: ['Camaná', 'Jose Maria Quimper'],
     },
     Cusco: {
       Cusco: ['Cusco', 'Santiago', 'Wanchaq'],
-      Urubamba: ['Urubamba', 'Ollantaytambo', 'Machupicchu'],
+      Urubamba: ['Urubamba', 'Ollantaytambo'],
+    },
+    'La Libertad': {
+      Trujillo: ['Trujillo', 'Huanchaco', 'Moche', 'Víctor Larco Herrera'],
     },
   };
 
-  // Opciones de configuración
-  tipos = [
-    'Violencia Física',
-    'Violencia Psicológica',
-    'Violencia Económica',
-    'Trata de Personas',
-    'Ciberacoso',
-  ];
-  niveles = ['Bajo', 'Medio', 'Alto', 'Crítico'];
-
-  // Listas dinámicas
   departamentos = Object.keys(this.ubicaciones);
   provincias: string[] = [];
   distritos: string[] = [];
 
-  // Definición del formulario reactivo
-  alertForm = this.fb.group({
-    tipo: ['Violencia Física', Validators.required],
-    riesgo: ['Bajo', Validators.required],
+  // Formulario Reactivo
+  reportForm = this.fb.group({
+    destinatario: ['', [Validators.required, Validators.email]],
+    asunto: ['Reporte Situacional de Alertas', Validators.required],
     departamento: ['', Validators.required],
     provincia: [{ value: '', disabled: true }, Validators.required],
     distrito: [{ value: '', disabled: true }, Validators.required],
-    descripcion: ['', [Validators.required, Validators.minLength(10)]],
+    mensaje: [''],
   });
 
   constructor() {
-    // Lógica de cascada para Provincias
-    this.alertForm.get('departamento')?.valueChanges.subscribe((dept) => {
+    // 1. Lógica de cascada: Departamento -> Provincia
+    this.reportForm.get('departamento')?.valueChanges.subscribe((dept) => {
       if (dept) {
-        this.provincias = Object.keys((this.ubicaciones as any)[dept]);
-        this.alertForm.get('provincia')?.enable();
-        this.alertForm.get('provincia')?.setValue('');
-        this.alertForm.get('distrito')?.disable();
-        this.alertForm.get('distrito')?.setValue('');
+        this.provincias = Object.keys(this.ubicaciones[dept]);
+        this.reportForm.get('provincia')?.enable();
+        this.reportForm.get('provincia')?.setValue('');
+        this.distritos = [];
+        this.reportForm.get('distrito')?.disable();
+        this.reportForm.get('distrito')?.setValue('');
+
+        // Auto-actualizar asunto sugerido
+        this.reportForm.patchValue({ asunto: `Reporte de Alertas - Región ${dept}` });
       }
     });
 
-    // Lógica de cascada para Distritos
-    this.alertForm.get('provincia')?.valueChanges.subscribe((prov) => {
-      const dept = this.alertForm.get('departamento')?.value;
+    // 2. Lógica de cascada: Provincia -> Distrito
+    this.reportForm.get('provincia')?.valueChanges.subscribe((prov) => {
+      const dept = this.reportForm.get('departamento')?.value;
       if (dept && prov) {
-        this.distritos = (this.ubicaciones as any)[dept][prov];
-        this.alertForm.get('distrito')?.enable();
-        this.alertForm.get('distrito')?.setValue('');
+        this.distritos = this.ubicaciones[dept][prov];
+        this.reportForm.get('distrito')?.enable();
+        this.reportForm.get('distrito')?.setValue('');
       }
     });
   }
 
-  setRiesgo(nivel: string) {
-    this.alertForm.patchValue({ riesgo: nivel });
-  }
-
-  onSubmit() {
-    if (this.alertForm.valid) {
-      console.log('Alerta registrada:', this.alertForm.getRawValue());
-      alert('¡Alerta enviada con éxito!');
-      this.alertForm.reset({ tipo: 'Violencia Física', riesgo: 'Bajo' });
-    } else {
-      this.alertForm.markAllAsTouched();
+  enviarReporte() {
+    if (this.reportForm.invalid) {
+      this.reportForm.markAllAsTouched();
+      return;
     }
+
+    this.isSubmitting.set(true);
+    this.successMessage.set(false);
+
+    // 1. Recopilar datos del formulario incluyendo los campos deshabilitados
+    const data = this.reportForm.getRawValue();
+
+
+
+    /* ===============================================================
+      INTEGRACIÓN REAL CON LA API (Descomentar en entorno real)
+      ===============================================================
+      this.http.post('http://localhost:8080/api/emails/send-alert', payload)
+        .pipe(
+          catchError(err => {
+            console.error('Error enviando el correo', err);
+            alert('Hubo un error al enviar el correo.');
+            return of(null);
+          }),
+          finalize(() => this.isSubmitting.set(false))
+        )
+        .subscribe(response => {
+          if (response) {
+            this.successMessage.set(true);
+            this.reportForm.reset();
+          }
+        });
+    */
+
+    // SIMULACIÓN DE CONEXIÓN (Para que lo pruebes visualmente ahora mismo)
+    setTimeout(() => {
+      this.isSubmitting.set(false);
+      this.successMessage.set(true);
+      // Reiniciamos el formulario dejando los selects en estado inicial
+      this.reportForm.reset({ departamento: '', provincia: '', distrito: '' });
+      this.reportForm.get('provincia')?.disable();
+      this.reportForm.get('distrito')?.disable();
+    }, 2000); // Simulamos 2 segundos de carga en el servidor
   }
 }

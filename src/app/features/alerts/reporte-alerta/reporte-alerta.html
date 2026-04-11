@@ -1,89 +1,107 @@
-<div class="form-wrapper animate-fade">
-  <div class="alert-card">
+<div class="reporte-wrapper animate-fade">
+  <div class="reporte-card">
 
     <header class="card-header">
-      <div class="icon-circle">🚨</div>
-      <h2>Reporte de Alerta Segura</h2>
-      <p>Ubica el incidente para una respuesta efectiva del Observatorio.</p>
+      <div class="icon-circle">✉️</div>
+      <h2>Enviar Reporte Territorial</h2>
+      <p>Genera y envía un informe de situación a las autoridades competentes basado en la ubicación seleccionada.</p>
     </header>
 
-    <form [formGroup]="alertForm" (ngSubmit)="onSubmit()" class="alert-form">
-
-      <!-- Fila 1: Tipo de Incidente -->
-      <div class="form-group">
-        <label>Tipo de Incidente</label>
-        <div class="select-wrapper">
-          <select formControlName="tipo" class="form-control">
-            @for (tipo of tipos; track tipo) {
-            <option [value]="tipo">{{ tipo }}</option>
-            }
-          </select>
-        </div>
+    <!-- Mensaje de Éxito -->
+    @if (successMessage()) {
+    <div class="success-alert animate-fade">
+      <span class="icon">✅</span>
+      <div class="text">
+        <strong>¡Reporte Enviado!</strong>
+        <p>El correo ha sido enviado exitosamente al destinatario.</p>
       </div>
+      <button class="btn-close-alert" (click)="successMessage.set(false)">✖</button>
+    </div>
+    }
 
-      <!-- UBICACIÓN: Grilla de combos -->
-      <div class="location-grid">
-        <div class="form-group">
-          <label>Departamento</label>
-          <div class="select-wrapper">
-            <select formControlName="departamento" class="form-control">
-              <option value="" disabled selected>Seleccione...</option>
-              @for (dept of departamentos; track dept) {
-              <option [value]="dept">{{ dept }}</option>
-              }
-            </select>
-          </div>
-        </div>
+    <form [formGroup]="reportForm" (ngSubmit)="enviarReporte()" class="reporte-form">
+
+      <!-- SECCIÓN: DESTINATARIO -->
+      <div class="form-section">
+        <h3 class="section-title">Datos de Envío</h3>
 
         <div class="form-group">
-          <label>Provincia</label>
-          <div class="select-wrapper">
-            <select formControlName="provincia" class="form-control">
-              <option value="" disabled selected>Seleccione...</option>
-              @for (prov of provincias; track prov) {
-              <option [value]="prov">{{ prov }}</option>
-              }
-            </select>
+          <label>Correo Electrónico de Destino</label>
+          <div class="input-wrapper">
+            <span class="input-icon">@</span>
+            <input type="email" formControlName="destinatario" class="form-control with-icon"
+              placeholder="autoridad@institucion.gob.pe">
           </div>
         </div>
 
-        <div class="form-group full-width">
-          <label>Distrito</label>
-          <div class="select-wrapper">
-            <select formControlName="distrito" class="form-control">
-              <option value="" disabled selected>Seleccione...</option>
-              @for (dist of distritos; track dist) {
-              <option [value]="dist">{{ dist }}</option>
-              }
-            </select>
+        <div class="form-group">
+          <label>Asunto del Correo</label>
+          <input type="text" formControlName="asunto" class="form-control"
+            placeholder="Ej. Reporte de Riesgo Nivel Alto">
+        </div>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- SECCIÓN: UBICACIÓN (CASCADA) -->
+      <div class="form-section">
+        <h3 class="section-title">Filtro Geográfico</h3>
+
+        <div class="location-grid">
+          <div class="form-group">
+            <label>Departamento</label>
+            <div class="select-wrapper">
+              <select formControlName="departamento" class="form-control">
+                <option value="" disabled selected>Seleccione...</option>
+                @for (dept of departamentos; track dept) {
+                <option [value]="dept">{{ dept }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label>Provincia</label>
+            <div class="select-wrapper">
+              <select formControlName="provincia" class="form-control">
+                <option value="" disabled selected>Seleccione...</option>
+                @for (prov of provincias; track prov) {
+                <option [value]="prov">{{ prov }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group full-width">
+            <label>Distrito</label>
+            <div class="select-wrapper">
+              <select formControlName="distrito" class="form-control">
+                <option value="" disabled selected>Seleccione...</option>
+                @for (dist of distritos; track dist) {
+                <option [value]="dist">{{ dist }}</option>
+                }
+              </select>
+            </div>
           </div>
         </div>
       </div>
 
-      <!-- Nivel de Riesgo -->
-      <div class="form-group">
-        <label>Nivel de Riesgo Estimado</label>
-        <div class="segmented-control">
-          @for (nivel of niveles; track nivel) {
-          <button type="button" class="segment-btn" [class.active]="alertForm.get('riesgo')?.value === nivel"
-            (click)="setRiesgo(nivel)">
-            {{ nivel }}
-          </button>
-          }
-        </div>
+      <div class="form-group mt-3">
+        <label>Mensaje Adicional / Contexto</label>
+        <textarea formControlName="mensaje" class="form-control" rows="3"
+          placeholder="Añade observaciones para el destinatario..."></textarea>
       </div>
 
-      <!-- Descripción -->
-      <div class="form-group">
-        <label>Descripción de los hechos</label>
-        <textarea formControlName="descripcion" class="form-control" rows="3"
-          placeholder="¿Qué sucedió? Escribe detalles relevantes..."></textarea>
-      </div>
-
-      <!-- Acciones -->
+      <!-- BOTONES -->
       <div class="form-actions">
-        <button type="button" class="btn-cancelar">Cancelar</button>
-        <button type="submit" [disabled]="alertForm.invalid" class="btn-enviar">ENVIAR ALERTA</button>
+        <button type="button" class="btn-cancelar" (click)="reportForm.reset()">Limpiar</button>
+        <button type="submit" [disabled]="reportForm.invalid || isSubmitting()" class="btn-enviar">
+          @if (isSubmitting()) {
+          <span class="spinner"></span> Procesando...
+          } @else {
+          <span>📤 ENVIAR REPORTE</span>
+          }
+        </button>
       </div>
 
     </form>

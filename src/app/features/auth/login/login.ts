@@ -25,6 +25,8 @@ export class Login {
     'carredondo@mujeres.gob.mx',
     'parrieta@mujeres.gob.mx',
     'frodriguez@data4sdgs.org',
+    'marcoamm.0117@gmail.com',
+    'anhfernandezc@gmail.com'
   ];
 
   isLoading = signal(false);
