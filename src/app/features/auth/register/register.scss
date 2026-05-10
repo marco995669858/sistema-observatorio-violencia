@@ -1,0 +1,240 @@
+.content-viewport {
+  padding: 0 !important;
+}
+
+.register-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100%;
+  padding: 2rem 1rem;
+}
+
+.register-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  width: 100%;
+  max-width: 950px;
+  padding: 3rem;
+  border-radius: 2rem;
+  box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.1);
+  transition: background 0.3s ease, border 0.3s ease;
+
+  @media (max-width: 640px) {
+    padding: 2rem 1.5rem;
+  }
+}
+
+.register-header {
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  .icon-badge {
+    width: 64px;
+    height: 64px;
+    background: var(--accent);
+    border-radius: 1.2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 8px 16px rgba(79, 70, 229, 0.2);
+
+    .icon {
+      font-size: 1.8rem;
+    }
+  }
+
+  h1 {
+    font-size: 2rem;
+    font-weight: 900;
+    color: var(--text-main);
+    letter-spacing: -1px;
+    margin-bottom: 0.5rem;
+  }
+
+  p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
+
+.register-form {
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+
+    @media (max-width: 768px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+
+    label {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--text-main);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding-left: 0.25rem;
+    }
+  }
+}
+
+.input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  .input-icon {
+    position: absolute;
+    left: 1rem;
+    font-size: 1.1rem;
+    opacity: 0.7;
+  }
+
+  input {
+    width: 100%;
+    padding: 1rem 1rem 1rem 3rem;
+    border-radius: 1rem;
+    border: 2px solid var(--border-color);
+    background: var(--nav-hover);
+    color: var(--text-main);
+    font-size: 0.95rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    outline: none;
+
+    &:focus {
+      border-color: var(--accent);
+      background: var(--bg-card);
+      box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.1);
+    }
+
+    &::placeholder {
+      color: var(--text-muted);
+      opacity: 0.5;
+    }
+  }
+}
+
+.alert-error {
+  background: #fef2f2;
+  border: 1px solid #fca5a5;
+  color: #dc2626;
+  padding: 0.8rem 1rem;
+  border-radius: 0.8rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.5rem;
+  animation: shake 0.4s ease;
+}
+
+.error-hint {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #dc2626;
+  padding-left: 0.5rem;
+}
+
+.btn-submit {
+  width: 100%;
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border-radius: 1.2rem;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 24px -6px rgba(79, 70, 229, 0.4);
+    filter: brightness(1.1);
+
+    .btn-arrow {
+      transform: translateX(4px);
+    }
+  }
+
+  &:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    filter: grayscale(1);
+  }
+
+  .btn-arrow {
+    font-size: 1.2rem;
+    transition: transform 0.2s ease;
+  }
+}
+
+.form-footer {
+  text-align: center;
+  margin-top: 2rem;
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-weight: 500;
+
+  .link {
+    color: var(--accent);
+    font-weight: 800;
+    text-decoration: none;
+    margin-left: 0.5rem;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
+
+.animate-in {
+  animation: slideUp 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes shake {
+
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-4px);
+  }
+
+  75% {
+    transform: translateX(4px);
+  }
+}

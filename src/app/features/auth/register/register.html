@@ -1,0 +1,97 @@
+ <p-toast />
+<div class="register-container animate-in">
+  <div class="register-card">
+
+    <!-- Encabezado con Icono -->
+    <header class="register-header">
+      <div class="icon-badge">
+        <span class="icon">🛡️</span>
+      </div>
+      <h1>Crear Cuenta</h1>
+      <p>Únete a la red de protección y monitoreo del Observatorio de Violencia.</p>
+    </header>
+
+    <!-- Formulario -->
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="register-form">
+
+      <div class="form-grid">
+        <!-- DNI -->
+        <div class="form-group">
+          <label>Documento de Identidad (DNI)</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🪪</span>
+            <input type="text" formControlName="dni" placeholder="Ej. 12345678" maxlength="8" (keyup)="onInput()">
+          </div>
+          @if (registerForm.get('dni')?.touched && registerForm.get('dni')?.invalid) {
+          <span class="error-hint">El DNI debe tener 8 dígitos numéricos.</span>
+          }
+        </div>
+
+        <!-- Nombre Completo -->
+        <div class="form-group">
+          <label>Nombre Completo</label>
+          <div class="input-wrapper">
+            <span class="input-icon">👤</span>
+            <input type="text" formControlName="nombre" placeholder="Ej. Ana García">
+          </div>
+        </div>
+
+        <!-- Correo Electrónico -->
+        <div class="form-group">
+          <label>Correo Electrónico</label>
+          <div class="input-wrapper">
+            <span class="input-icon">✉️</span>
+            <input type="email" formControlName="email" placeholder="usuario@institucion.gob">
+          </div>
+        </div>
+
+        <!-- Teléfono / Institución -->
+        <div class="form-group">
+          <label>Teléfono de Contacto</label>
+          <div class="input-wrapper">
+            <span class="input-icon">📞</span>
+            <input type="text" formControlName="telefono" placeholder="Ej. 999 888 777">
+          </div>
+        </div>
+
+        <!-- Contraseña -->
+        <div class="form-group">
+          <label>Contraseña</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔒</span>
+            <input type="password" formControlName="password" placeholder="••••••••">
+          </div>
+        </div>
+
+        <!-- Confirmar Contraseña -->
+        <div class="form-group">
+          <label>Confirmar Contraseña</label>
+          <div class="input-wrapper">
+            <span class="input-icon">🔑</span>
+            <input type="password" formControlName="confirmPassword" placeholder="••••••••">
+          </div>
+        </div>
+      </div>
+
+      <!-- Mensaje de error de coincidencia -->
+      @if (registerForm.errors?.['mismatch'] && registerForm.get('confirmPassword')?.touched) {
+      <div class="alert-error">
+        <span class="alert-icon">⚠️</span>
+        Las contraseñas no coinciden.
+      </div>
+      }
+
+      <!-- Botón de Acción -->
+      <button type="submit" [disabled]="registerForm.invalid" class="btn-submit">
+        <span class="btn-text">REGISTRAR USUARIO</span>
+        <span class="btn-arrow">→</span>
+      </button>
+
+      <!-- Footer de Auth -->
+      <footer class="form-footer">
+        ¿Ya tienes una cuenta? <a routerLink="/login" class="link">Inicia Sesión</a>
+      </footer>
+    </form>
+
+  </div>
+</div>

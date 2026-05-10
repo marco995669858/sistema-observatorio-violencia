@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "app-parqueadero": {
+    "app-mujer": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -38,13 +38,13 @@
               "budgets": [
                 {
                   "type": "initial",
-                  "maximumWarning": "15mb",
-                  "maximumError": "15mb"
+                  "maximumWarning": "900kb",
+                  "maximumError": "21mb"
                 },
                 {
                   "type": "anyComponentStyle",
-                  "maximumWarning": "15mb",
-                  "maximumError": "15mb"
+                  "maximumWarning": "14kb",
+                  "maximumError": "28kb"
                 }
               ],
               "outputHashing": "all"
@@ -61,10 +61,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "app-parqueadero:build:production"
+              "buildTarget": "app-mujer:build:production"
             },
             "development": {
-              "buildTarget": "app-parqueadero:build:development"
+              "buildTarget": "app-mujer:build:development"
             }
           },
           "defaultConfiguration": "development"
